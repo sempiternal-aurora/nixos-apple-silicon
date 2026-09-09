@@ -59,7 +59,7 @@
         in
         {
           linux-asahi = pkgs.linux-asahi.kernel;
-          uboot-asahi = pkgs.uboot-asahi;
+          inherit (pkgs) uboot-asahi libva-v4l2_request-sofus13;
 
           installer-bootstrap =
             let

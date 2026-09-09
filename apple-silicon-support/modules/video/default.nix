@@ -13,6 +13,17 @@ in
     hardware.firmware = [
       pkgs.avd-fw
     ];
+
+    hardware.graphics = lib.mkIf (cfg.avd.vaapi-support) {
+      enable = true;
+      extraPackages = [
+        pkgs.libva-v4l2_request-sofus13
+      ];
+    };
+
+    environment.sessionVariables = lib.mkIf (cfg.avd.vaapi-support) {
+      LIBVA_DRIVER_NAME = "v4l2_request-sofus13";
+    };
   };
 
   options.hardware.asahi.avd = {
@@ -21,6 +32,13 @@ in
       default = config.hardware.asahi.enable;
       description = ''
         Setup the firmware required for the Apple Video Decoder to work properly.
+      '';
+    };
+    vaapi-support = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Use libva-v4l2_request-sofus13 to expose a vaapi interface with AVD (Experimental)
       '';
     };
   };
